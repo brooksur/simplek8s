@@ -5,8 +5,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3050
-      targetPort: 3000
-      nodePort: 31515
+    - port: 3050 # the port that the service is going to use
+      targetPort: 3000 # the port that the container is listening on
+      nodePort: 31515 # the port that we want to expose to the outside world
   selector:
     component: web
