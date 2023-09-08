@@ -14,13 +14,25 @@
 - When applying a configuration file, if there is an existing object with the same name and type, the master will update that existing object. If not, it will create a new object.
 - `kubectl describe <object_type> <object_name>`: returns detailed information about the provided object.
 - Only certain types of information can change when updating pods. Otherwise an error will be thrown.
+- `kubectl delete -f <config file>`: deletes a configuration from a cluster
 
 ### Configuration
 
 - Config files are used to make **\*\*\***objects**\*\*\***
 - Each object type has a different purpose
 - apiVersion: scopes the set different kinds of objects that can be used
+- selector: selects an object in a cluster
+  - matchLabels: used to match against another objects label
 - Pods: An object that can be used to run containers. Groups together containers of very similar purpose.
+  - Runs a single set of containers
+  - Good for one-ff dev purposes
+  - Rarely used directly in production
 - Services: An object that sets up networking in a kubernetes cluster. Services have sub types.
   - NodePort: Exposes a container to the outside world. Only good for dev purposes.
   - label selector system: a system in kubernetes for defining associations between objects. One object defines a label and another selects it.
+- Deployment: Maintains a set of identical pods, ensuring they have the correct config and that the right number exists
+  - Runs a set of identical pods (one or more)
+  - Monitors the state of each pod, updating as necessary
+  - Good for development and production
+  - It’s better to use deployments instead of directly using pods
+  - replicas: number of pods for deployment to make
