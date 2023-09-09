@@ -15,6 +15,8 @@
 - `kubectl describe <object_type> <object_name>`: returns detailed information about the provided object.
 - Only certain types of information can change when updating pods. Otherwise an error will be thrown.
 - `kubectl delete -f <config file>`: deletes a configuration from a cluster
+- `kubectl get pods -o wide`: provides more information as opposed to the standard get
+- Every single pod get its own IP inside of a node
 
 ### Configuration
 
@@ -30,9 +32,20 @@
 - Services: An object that sets up networking in a kubernetes cluster. Services have sub types.
   - NodePort: Exposes a container to the outside world. Only good for dev purposes.
   - label selector system: a system in kubernetes for defining associations between objects. One object defines a label and another selects it.
+  - When pods come online or shut down, they are being assigned new IP addresses. If a service is assigned to a pod it will keep track of these changes and make sure that traffic is still being routed to the correct locations
 - Deployment: Maintains a set of identical pods, ensuring they have the correct config and that the right number exists
   - Runs a set of identical pods (one or more)
   - Monitors the state of each pod, updating as necessary
   - Good for development and production
   - It’s better to use deployments instead of directly using pods
   - replicas: number of pods for deployment to make
+
+### Deployment
+
+- What happens if you want k8s to pull down the latest version of an image for a container?
+  - You can manually delete a pod in a deployment and the deployment will recreate the pod
+  - You can tag an image with a version and then update the configuration to use that version
+  - Use an imperative command to update the image version the deployment should use
+    - Tag docker image: `docker build -t brooksbenson03/multi-client:v5 .`
+    - Push docker image: `docker push -t brooksbenson03/multi-client:v5`
+    - Use kubernetes imperative command: `kubectl set image <object_type>/<object_name> <container_name> = <new image to use>`
